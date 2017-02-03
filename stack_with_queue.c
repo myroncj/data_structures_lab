@@ -68,23 +68,33 @@ void pop()
 	}
 	else
 	{
-		while(q1f != q1r)
+		while(q1f < q1r)
 		{
 			if(q2f == -1)
 				q2f = 0;
+
+			q2r++;
 			//q2r = q2r + 1;
-			q2[++q2r] = q1[++q1f];
+			q2[q2r] = q1[q1f];
+			//q1f = q1f + 1;
+			
+			q1f++;
 		}
 
 		element=q1[q1f];
 		q1r=q1f=-1;
 
-		while(q2f != q2r)
+		while(q2f < q2r)
 		{
 			if(q1f == -1)
 				q1f = 0;
+			
+			q1r++;
 			//q1r = q1r + 1;
-			q1[++q1r] = q2[++q2f];
+			q1[q1r] = q2[q2f];
+			//q2f = q2f + 1;
+			
+			q2f++;
 		}
 		q2f=q2r=-1;
 	}
