@@ -72,7 +72,7 @@ int main () {
 }
  
 void insert_at_begin(int x) {
-   struct node *t;
+   struct node *t,*p;
  
    t = (struct node*)malloc(sizeof(struct node));
    count++;
@@ -80,13 +80,20 @@ void insert_at_begin(int x) {
    if (first == NULL) {
       first = t;
       first->data = x;
-      first->link = NULL;
+      first->link = first; //
       return;
    }
  
+   p = first;
+   while(p->link != first)
+   {
+      p=p->link;
+   }
+
    t->data = x;
    t->link = first;
-   first = t;
+   first = t; 
+   p->link = first;
 }
  
 void insert_at_end(int x) {
@@ -104,12 +111,12 @@ void insert_at_end(int x) {
  
    temp = first;
  
-   while (temp->link != NULL)
+   while (temp->link != first)
       temp = temp->link;   
  
    temp->link = t;
    t->data    = x;
-   t->link    = NULL;
+   t->link    = first;
 }
 
 void insert_at_middle(int x,int y)
@@ -127,7 +134,7 @@ void insert_at_middle(int x,int y)
       return;
    }
 
-   while(q->link != NULL && q->data != y)
+   while(q->link != first && q->data != y)
    {
       q=q->link;
    }
@@ -149,7 +156,7 @@ void traverse() {
  
    printf("There are %d elements in linked list.\n", count);
  
-   while (t->link != NULL) {
+   while (t->link != first) {
       printf("%d\n", t->data);
       t = t->link;
    }
@@ -157,18 +164,27 @@ void traverse() {
 }
  
 void delete_from_begin() {
-   struct node *t;
+   struct node *t,*p;
    int n;
  
    if (first == NULL) {
       printf("Linked list is already empty.\n");
       return;
    }
- 
+
+   p = first;
+   while(p->link != first)
+   {
+      p=p->link;
+   }
+
    n = first->data;
    t = first->link;
    free(first);
    first = t;
+
+   p->link=first;
+   
    count--;
  
    printf("%d deleted from beginning successfully.\n", n);
@@ -195,13 +211,13 @@ void delete_from_end() {
  
    t = first;
  
-   while (t->link != NULL) {
+   while (t->link != first) {
       u = t;
       t = t->link;
    }
  
    n = t->data;
-   u->link = NULL;
+   u->link = first;
    free(t);
  
    printf("\n%d deleted from end successfully.\n", n);
