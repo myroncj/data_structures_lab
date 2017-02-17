@@ -8,11 +8,12 @@ struct node {
  
 struct node *first = NULL;
 void insert_at_begin(int);
-void insert_at_middle(int,int);
+void insert_after(int,int);
+void insert_before(int, int);
 void insert_at_end(int);
 void traverse();
 void delete_from_begin();
-void delete_from_bet(int);
+void delete_after(int);
 void delete_from_end();
 int count = 0;
  
@@ -20,14 +21,15 @@ int main () {
    int input, data, mid;
  
    for (;;) {
-      printf("\n\n1. Insert an element at beginning of linked list.\n");
-      printf("2. Insert an element in between of the linked list.\n");
-      printf("3. Insert an element at end of linked list.\n");
-      printf("4. Traverse linked list.\n");
-      printf("5. Delete element from beginning.\n");
-      printf("6. Delete element in between.\n");
-      printf("7. Delete element from end.\n");
-      printf("8. Exit\n");
+      printf("\n\n1. Insert an node at beginning of linked list.\n");
+      printf("2. Insert an node after a certain element of the linked list.\n");
+      printf("3. Insert an node before a certain node of the linked list.\n");
+      printf("4. Insert an node at end of linked list.\n");
+      printf("5. Traverse linked list.\n");
+      printf("6. Delete node from beginning.\n");
+      printf("7. Delete node in between.\n");
+      printf("8. Delete node from end.\n");
+      printf("9. Exit\n");
  
       scanf("%d", &input);
  
@@ -42,26 +44,35 @@ int main () {
          scanf("%d", &data);
          printf("\nAfter which value should it be inserted?\n");
          scanf("%d", &mid);
-         insert_at_middle(data,mid);
+         insert_after(data,mid);
       }
-      else if (input == 3) {
+               else if (input == 3)
+      {
+         printf("\nEnter value of element\n");
+         scanf("%d", &data);
+         printf("\nBefore which value should it be inserted?\n");
+         scanf("%d", &mid);
+         insert_before(data,mid);
+      }
+
+      else if (input == 4) {
          printf("Enter value of element\n");
          scanf("%d", &data);
          insert_at_end(data);
       }
-      else if (input == 4)
-         traverse();
       else if (input == 5)
-         delete_from_begin();  
+         traverse();
       else if (input == 6)
+         delete_from_begin();  
+      else if (input == 7)
       {
          printf("Enter the element to delete:");
          scanf("%d",&data);
-         delete_from_bet(data);
+         delete_after(data);
       } 
-      else if (input == 7)
-         delete_from_end();
       else if (input == 8)
+         delete_from_end();
+      else if (input == 9)
          break;
       
       else
@@ -112,13 +123,14 @@ void insert_at_end(int x) {
    t->link    = NULL;
 }
 
-void insert_at_middle(int x,int y)
+void insert_after(int x,int y)
 {
    struct node *t, *q;
 
    q=first;
 
    t=(struct node*)malloc(sizeof(struct node));
+   count++;
 
    if (first == NULL) {
       first = t;
@@ -137,6 +149,34 @@ void insert_at_middle(int x,int y)
    q->link=t;
 
 } 
+
+void insert_before(int x,int y)
+{
+   struct node *t, *q;
+
+   q=first;
+
+   t=(struct node*)malloc(sizeof(struct node));
+   count++;
+
+   if (first == NULL) {
+      first = t;
+      first->data = x;
+      first->link = NULL;
+      return;
+   }
+
+   while(q->link->link != NULL && q->link->data != y)
+   {
+      q=q->link;
+   }
+
+   t->link=q->link;
+   t->data=x;
+   q->link=t;
+
+} 
+
 void traverse() {
    struct node *t;
  
@@ -207,7 +247,7 @@ void delete_from_end() {
    printf("\n%d deleted from end successfully.\n", n);
 }
 
-void delete_from_bet(int x)
+void delete_after(int x)
 {
    struct node *t,*u;
    int n;

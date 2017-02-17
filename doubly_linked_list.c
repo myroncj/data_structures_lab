@@ -2,8 +2,9 @@
 #include <stdlib.h>
  
 struct node {
+   struct node *prev;
    int data;
-   struct node *link;
+   struct node *next;
 };
  
 struct node *first = NULL;
@@ -13,14 +14,14 @@ void insert_before(int, int);
 void insert_at_end(int);
 void traverse();
 void delete_from_begin();
-void delete_from_bet(int);
+void delete_after(int);
 void delete_from_end();
 int count = 0;
  
 int main () {
    int input, data, mid;
  
-   for (;;){
+   for (;;) {
       printf("\n\n1. Insert an node at beginning of linked list.\n");
       printf("2. Insert an node after a certain element of the linked list.\n");
       printf("3. Insert an node before a certain node of the linked list.\n");
@@ -68,7 +69,7 @@ int main () {
       {
          printf("Enter the element to delete:");
          scanf("%d",&data);
-         delete_from_bet(data);
+         delete_after(data);
       } 
       else if (input == 8)
          delete_from_end();
@@ -83,28 +84,24 @@ int main () {
 }
  
 void insert_at_begin(int x) {
-   struct node *t,*p;
+   struct node *t;
  
    t = (struct node*)malloc(sizeof(struct node));
+
    count++;
  
    if (first == NULL) {
       first = t;
+      first->prev = NULL;
       first->data = x;
-      first->link = first; //
+      first->next = NULL;
       return;
    }
  
-   p = first;
-   while(p->link != first)
-   {
-      p=p->link;
-   }
-
+   t->prev = NULL;
    t->data = x;
-   t->link = first;
-   first = t; 
-   p->link = first;
+   t->next = first;
+   first = t;
 }
  
 void insert_at_end(int x) {
@@ -122,37 +119,42 @@ void insert_at_end(int x) {
  
    temp = first;
  
-   while (temp->link != first)
-      temp = temp->link;   
+   while (temp->next != NULL)
+      temp = temp->next;   
  
-   temp->link = t;
+   temp->next = t;
+   t->prev = temp;
    t->data    = x;
-   t->link    = first;
+   t->next    = NULL;
 }
+
 void insert_after(int x,int y)
 {
    struct node *t, *q;
 
-   q=first;
+   q = first;
 
    t=(struct node*)malloc(sizeof(struct node));
+
    count++;
 
    if (first == NULL) {
       first = t;
+      first->prev = NULL;
       first->data = x;
-      first->link = NULL;
+      first->next = NULL;
       return;
    }
 
-   while(q->link != first && q->data != y)
+   while(q->next != NULL && q->data != y)
    {
-      q=q->link;
+      q=q->next;
    }
 
-   t->link=q->link;
+   t->next=q->next;
+   t->prev=q;
    t->data=x;
-   q->link=t;
+   q->next=t;
 
 } 
 
@@ -167,21 +169,24 @@ void insert_before(int x,int y)
 
    if (first == NULL) {
       first = t;
+      first->prev = NULL;
       first->data = x;
       first->link = NULL;
       return;
    }
 
-   while(q->link->link != first && q->link->data != y)
+   while(q->next->next != NULL && q->next->data != y)
    {
-      q=q->link;
+      q=q->next;
    }
 
-   t->link=q->link;
+   t->next=q->next;
+   t->prev=q;
    t->data=x;
-   q->link=t;
+   q->next=t;
 
 } 
+
 void traverse() {
    struct node *t;
  
@@ -194,35 +199,26 @@ void traverse() {
  
    printf("There are %d elements in linked list.\n", count);
  
-   while (t->link != first) {
+   while (t->next != NULL) {
       printf("%d\n", t->data);
-      t = t->link;
+      t = t->next;
    }
    printf("%d\n", t->data);
 }
  
 void delete_from_begin() {
-   struct node *t,*p;
+   struct node *t;
    int n;
  
    if (first == NULL) {
       printf("Linked list is already empty.\n");
       return;
    }
-
-   p = first;
-   while(p->link != first)
-   {
-      p=p->link;
-   }
-
+ 
    n = first->data;
-   t = first->link;
+   t = first->next;
    free(first);
    first = t;
-
-   p->link=first;
-   
    count--;
  
    printf("%d deleted from beginning successfully.\n", n);
@@ -239,7 +235,7 @@ void delete_from_end() {
  
    count--;
  
-   if (first->link == NULL) {
+   if (first->next == NULL) {
       n = first->data;
       free(first);
       first = NULL;
@@ -249,19 +245,19 @@ void delete_from_end() {
  
    t = first;
  
-   while (t->link != first) {
+   while (t->next != NULL) {
       u = t;
-      t = t->link;
+      t = t->next;
    }
  
    n = t->data;
-   u->link = first;
+   u->next = NULL;
    free(t);
  
    printf("\n%d deleted from end successfully.\n", n);
 }
 
-void delete_from_bet(int x)
+void delete_after(int x)
 {
    struct node *t,*u;
    int n;
@@ -274,7 +270,7 @@ void delete_from_bet(int x)
 
    count--;
 
-   if(first->link == NULL)
+   if(first->next == NULL)
    {
       n = first->data;
       free(first);
@@ -287,10 +283,10 @@ void delete_from_bet(int x)
 
    t = first;
 
-   while(t->link != NULL && t->data != x)
+   while(t->next != NULL && t->data != x)
    {
       u = t;
-      t= t->link;
+      t= t->next;
    }
 
    if(t->link == NULL)
@@ -300,7 +296,8 @@ void delete_from_bet(int x)
    }
 
    n=t->data;
-   u->link=t->link;
+
+   u->next=t->next;
    free(t);
 
    printf("\n%d successfully deleted!",n);
