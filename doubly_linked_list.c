@@ -97,7 +97,8 @@ void insert_at_begin(int x) {
       first->next = NULL;
       return;
    }
- 
+   
+   first->prev = t;
    t->prev = NULL;
    t->data = x;
    t->next = first;
@@ -125,8 +126,8 @@ void insert_at_end(int x) {
  
    temp->next = t;
    t->prev = temp;
-   t->data    = x;
-   t->next    = NULL;
+   t->data = x;
+   t->next = NULL;
 }
 
 void insert_after(int x,int y)
@@ -290,7 +291,7 @@ void delete_after(int x)
       t= t->next;
    }
 
-   if(t->link == NULL)
+   if(t->next == NULL)
    {
       printf("\nNode %d not found!",x);
       return;
