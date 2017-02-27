@@ -112,8 +112,9 @@ void insert_at_end(int x) {
  
    if (first == NULL) {
       first = t;
+      first->prev = NULL;
       first->data = x;
-      first->link = NULL;
+      first->next = NULL;
       return;
    }
  
@@ -171,7 +172,7 @@ void insert_before(int x,int y)
       first = t;
       first->prev = NULL;
       first->data = x;
-      first->link = NULL;
+      first->next = NULL;
       return;
    }
 
