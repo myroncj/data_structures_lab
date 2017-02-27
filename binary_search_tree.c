@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include <conio.h>
+#include <stdlib.h>
 
 struct node {
 	struct node *left;
@@ -8,10 +8,10 @@ struct node {
 };
 
 struct node *create();
-void insert(node *,node *);
-void preorder(node *);
-void postorder(node *);
-void inorder(node *);
+void insert(struct node *,struct node *);
+void preorder(struct node *);
+void postorder(struct node *);
+void inorder(struct node *);
 
 int main()
 {
@@ -34,7 +34,7 @@ int main()
 				insert(root,temp);
 			
 			printf("\nDo you want to add more elements? (y/n)");
-			scanf("%c",ch);
+			scanf("%c",op);
 		}
 
 		printf("\nTraversals...\n");
@@ -48,13 +48,13 @@ int main()
 
 		switch(ch)
 		{
-			case 1: inorder(root);
+			case 1: //inorder(root);
 					break;
 
 			case 2: preorder(root);
 					break;
 
-			case 3: postorder(root);
+			case 3: //postorder(root);
 					break;
 			case 4: exit(0);
 
@@ -62,4 +62,33 @@ int main()
 		}
 	}
 	return 0;
+}
+
+void insert(struct node *root, struct node *temp)
+{
+    if(temp->data<root->data)
+    {
+        if(root->left!=NULL)
+            insert(root->left,temp);
+        else
+            root->left=temp;
+    }
+    
+    if(temp->data>root->data)
+    {
+        if(root->right!=NULL)
+            insert(root->right,temp);
+        else
+            root->right=temp;
+    }
+}
+
+void preorder(struct node *root)
+{
+    if(root!=NULL)
+    {
+        printf("%d ",root->data);
+        preorder(root->left);
+        preorder(root->right);
+    }
 }
