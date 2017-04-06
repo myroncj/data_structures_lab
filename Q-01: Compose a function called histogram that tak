@@ -1,0 +1,2 @@
+Q-01: Compose a function called histogram that takes an array of integers and one more integer m as argumemts and returns an array on length m who's i-th element is the number of times the integer i appears in the input array.
+Assume that the values in the  input array are betwenn 0 and m-1 such that the sum of values in the returned array should be equal to the lenght of the array.

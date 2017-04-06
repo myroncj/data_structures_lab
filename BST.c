@@ -17,8 +17,6 @@ void search(struct btnode *t);
 void preorder(struct btnode *t);
 void postorder(struct btnode *t);
 void search1(struct btnode *t,int data);
-int smallest(struct btnode *t);
-int largest(struct btnode *t);
  
 int flag = 1;
  
@@ -257,29 +255,4 @@ void delete1(struct btnode *t)
         t->value = k;
     }
  
-}
- 
-/* To find the smallest element in the right sub tree */
-int smallest(struct btnode *t)
-{
-    t2 = t;
-    if (t->l != NULL)
-    {
-        t2 = t;
-        return(smallest(t->l));
-    }
-    else    
-        return (t->value);
-}
- 
-/* To find the largest element in the left sub tree */
-int largest(struct btnode *t)
-{
-    if (t->r != NULL)
-    {
-        t2 = t;
-        return(largest(t->r));
-    }
-    else    
-        return(t->value);
 }
